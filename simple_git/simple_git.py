@@ -9,3 +9,7 @@ class SimpleGit:
     @property
     def active_branch(self):
         return self.__repo.active_branch.name
+    
+    @property
+    def branches(self):
+        return [branch.name for branch in self.__repo.branches]
