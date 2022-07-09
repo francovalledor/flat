@@ -18,7 +18,7 @@ class Commit:
 
     @property
     def datetime(self):
-        return self.__commit.committed_datetime
+        return self.__commit.authored_datetime
 
     @property
     def affected_files(self):
