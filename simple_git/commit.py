@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from git import Commit as RepoCommit
 
 class Commit:
@@ -28,6 +30,9 @@ class Commit:
     def total_changes(self):
         return self.__commit.stats.total
 
+    def is_newer_than(self, other: Commit) -> bool:
+        return self.datetime > other.datetime
+    
     def __str__(self) -> str:
         return f"\nMessage: {self.message}\nAuthor: {self.author}\nDate: {self.datetime}\nHash: {self.hash}\n"
     
