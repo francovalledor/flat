@@ -1,7 +1,7 @@
 from git import GitCommandError, Repo
 
 from simple_git.commit import Commit
-from simple_git.exceptions import InvalidBranchNameException, MergeException
+from simple_git.exceptions import InvalidBranchNameException, MergeException, UncommittedChangesException
 
 class SimpleGit:
     CURRENT_DIRECTORY = '.'
@@ -34,6 +34,8 @@ class SimpleGit:
     
     def checkout(self, branch_name) -> None:
         self.__validate_branch_name(branch_name)
+        self.__validate_uncommitted_changes()
+
         self.__repo.branches[branch_name].checkout()
     
     
@@ -72,6 +74,17 @@ class SimpleGit:
     def __abort_merge(self) -> None:
         self.__repo.git.merge('--abort')
     
+   
+    def __are_there_uncommitted_changes(self) -> None:
+        modified_files_descriptor = self.__get_modified_files_states()
+       
+        return len(modified_files_descriptor) > 0  
+
+
+    def __validate_uncommitted_changes(self) -> None:
+        if self.__are_there_uncommitted_changes():
+            raise UncommittedChangesException
+
    
     def __get_modified_files_states(self) -> list:
         git_modified_files_with_status = self.__repo.git.status(porcelain=True).split('\n')

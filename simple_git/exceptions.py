@@ -10,4 +10,8 @@ class InvalidBranchNameException(Exception):
 class MergeException(Exception):
     def __str__(self) -> str:
         return "Merge exception, no changes."
-    
+
+
+class UncommittedChangesException(Exception):
+    def __str__(self) -> str:
+        return "You have uncommitted changes, please clean your workspace and try again"
