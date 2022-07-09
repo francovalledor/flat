@@ -58,12 +58,12 @@ class SimpleGit:
     def __validate_branch_name(self, branch_name):
         if branch_name not in self.branches:
             raise InvalidBranchNameException(branch_name)
-        
+
     
     def __are_there_conflicts(self) -> bool:
-        git_status = self.__repo.git.status(porcelain=True).split()
+        git_status = self.__get_modified_files_states()
         
-        if "UU" in git_status:
+        if GitStatuses.UNMERGED_BOTH_MODIFIED in git_status:
             return True
         
         return False
@@ -71,3 +71,21 @@ class SimpleGit:
 
     def __abort_merge(self) -> None:
         self.__repo.git.merge('--abort')
+    
+   
+    def __get_modified_files_states(self) -> list:
+        git_modified_files_with_status = self.__repo.git.status(porcelain=True).split('\n')
+        stripped = list(map(str.strip, git_modified_files_with_status))
+        
+        result = []
+        
+        for file in stripped:
+            first_space_index = file.index(' ')
+            status_descriptor = file[:first_space_index]
+            result.append(status_descriptor)
+            
+        return result
+            
+
+class GitStatuses:
+    UNMERGED_BOTH_MODIFIED = 'UU'
