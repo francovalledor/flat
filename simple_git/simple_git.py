@@ -1,7 +1,7 @@
-from git import GitCommandError, Repo
+from git import BadName, GitCommandError, Repo
 
 from simple_git.commit import Commit
-from simple_git.exceptions import InvalidBranchNameException, MergeException, UncommittedChangesException
+from simple_git.exceptions import InvalidBranchNameException, InvalidCommitHashException, MergeException, UncommittedChangesException
 
 class SimpleGit:
     CURRENT_DIRECTORY = '.'
@@ -55,6 +55,13 @@ class SimpleGit:
 
             self.checkout(current)
             raise MergeException
+    
+    def get_commit(self, hash: str) -> Commit:
+        try:
+            commit = self.__repo.commit(hash)
+            return commit
+        except BadName:
+            raise InvalidCommitHashException(hash)
     
 
     def __validate_branch_name(self, branch_name):
