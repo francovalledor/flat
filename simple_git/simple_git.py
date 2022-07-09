@@ -1,6 +1,7 @@
 from git import BadName, GitCommandError, Repo
 
 from simple_git.commit import Commit
+from simple_git.branch import Branch
 from simple_git.exceptions import InvalidBranchNameException, InvalidCommitHashException, MergeException, UncommittedChangesException
 
 class SimpleGit:
@@ -17,8 +18,13 @@ class SimpleGit:
     
     @property
     def branches(self):
-        return [branch.name for branch in self.__repo.branches]
+        return [Branch(branch) for branch in self.__repo.branches]
     
+    
+    @property
+    def branch_names(self):
+        return [branch.name for branch in self.branches]
+        
     
     def list_commits(self, branch_name=None):
         if branch_name is None:
@@ -65,7 +71,7 @@ class SimpleGit:
     
 
     def __validate_branch_name(self, branch_name):
-        if branch_name not in self.branches:
+        if branch_name not in self.branch_names:
             raise InvalidBranchNameException(branch_name)
 
     
