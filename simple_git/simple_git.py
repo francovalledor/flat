@@ -69,6 +69,10 @@ class SimpleGit:
         except BadName:
             raise InvalidCommitHashException(hash)
     
+    def get_branch_by_name(self, branch_name: str) -> Branch:
+        self.__validate_branch_name(branch_name)
+        
+        return Branch(self.__repo.branches[branch_name])
 
     def __validate_branch_name(self, branch_name):
         if branch_name not in self.branch_names:
