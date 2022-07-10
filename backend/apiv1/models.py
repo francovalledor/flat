@@ -5,7 +5,7 @@ class PR_statuses(models.TextChoices):
     CLOSED = 'CLOSED'
     MERGED = 'MERGED'
 
-class PullRequestsModels(models.Model):
+class PullRequest(models.Model):
 
     source = models.CharField(max_length=255)
     destination = models.CharField(max_length=255)
