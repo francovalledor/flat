@@ -1,5 +1,7 @@
-from apiv1.libs.simple_git import Commit, Branch
 from rest_framework import serializers
+
+from apiv1.libs.simple_git import Commit, Branch
+from apiv1.models import PullRequest
 
 
 def serialize_branch_details(branch: Branch, commits: list[Commit]):
@@ -29,3 +31,17 @@ class BranchesSerializer(serializers.Serializer):
 class BranchDetailsSerializer(serializers.Serializer):
     name = serializers.CharField()
     commits = CommitSerializer(many=True)
+    
+class PullRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PullRequest
+        fields = [
+            'id',
+            'source',
+            'destination',
+            'title',
+            'message',
+            'status',
+            'author_name',
+            'author_email',
+        ]
