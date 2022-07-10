@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 
 class PR_statuses(models.TextChoices):
@@ -10,7 +11,7 @@ class PullRequest(models.Model):
     source = models.CharField(max_length=255)
     destination = models.CharField(max_length=255)
     title = models.CharField(max_length=255)
-    message = models.TextField(default="")
+    message = models.TextField(default="", blank=True)
 
     status = models.CharField(
             choices=PR_statuses.choices,
@@ -20,4 +21,6 @@ class PullRequest(models.Model):
 
     author_name = models.CharField(max_length=255)
     author_email = models.CharField(max_length=255)
-    
+    created_date = models.DateTimeField(default=datetime.now, blank=True)
+    merged_date = models.DateTimeField(null=True, blank=True)
+    closed_date = models.DateTimeField(null=True, blank=True)

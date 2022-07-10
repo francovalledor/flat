@@ -44,4 +44,7 @@ class PullRequestSerializer(serializers.ModelSerializer):
             'status',
             'author_name',
             'author_email',
+            'created_date',
+            'merged_date',
+            'closed_date',
         ]
