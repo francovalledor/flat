@@ -65,7 +65,7 @@ class SimpleGit:
     def get_commit(self, hash: str) -> Commit:
         try:
             commit = self.__repo.commit(hash)
-            return commit
+            return Commit(commit)
         except BadName:
             raise InvalidCommitHashException(hash)
     
