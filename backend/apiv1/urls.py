@@ -1,5 +1,4 @@
 from django.urls import include, path
-from .views import branches
 from .views.commits import CommitsViewSet
 from .views.branches import BranchesViewSet
 from rest_framework import routers
