@@ -1,17 +1,17 @@
-from django.http import JsonResponse
-from django.views import View
+from rest_framework.response import Response
+from rest_framework import viewsets
 
 from apiv1.utils import get_all_branches, get_branch_with_commits
 
-
-class BranchListView(View):
-    def get(self, request):
+class BranchesViewSet(viewsets.ViewSet):   
+    def list(self, request):
         branches = get_all_branches()
 
-        return JsonResponse(branches, safe=False)
+        return Response(branches)
 
 
-class BranchDetailsView(View):
-    def get(self, *args, **kwargs):
-        branch_name = kwargs.get('branch_name')
-        return JsonResponse(get_branch_with_commits(branch_name))
+    def retrieve(self, request, pk):
+        branch_name = pk
+        branch = get_branch_with_commits(branch_name)
+
+        return Response(branch)

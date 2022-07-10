@@ -1,9 +1,14 @@
-from django.urls import path
-from .views import branches, commits
+from django.urls import include, path
+from .views import branches
+from .views.commits import CommitsViewSet
+from .views.branches import BranchesViewSet
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r'commits', CommitsViewSet, basename='commits')
+router.register(r'branches', BranchesViewSet, basename='branches')
+
 
 urlpatterns = [
-    path("branches/", branches.BranchListView.as_view(), name="branches"),
-    path("branches/<str:branch_name>", branches.BranchDetailsView.as_view(), name="branch_details"),
-    path("commits/", commits.CommitListView.as_view(), name="commits"),
-    path("commits/<str:hash>", commits.CommitDetailsView.as_view(), name="commit_details"),
+    path('', include(router.urls)),
 ]
