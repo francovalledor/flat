@@ -13,7 +13,7 @@ def validate_branches_are_different(source, destination):
     if source == destination:
         raise ValidationError(f"Source ({source}) and destination ({destination}) should be different")
 
-class PullRequestSerializer(ModelSerializer):
+class PullRequestBaseSerializer(ModelSerializer):
     def validate_source(self, source):
         validate_branch_name(source)
         

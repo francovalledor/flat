@@ -1,6 +1,6 @@
 from rest_framework.viewsets import mixins, GenericViewSet
 from apiv1.models import PullRequest
-from apiv1.serializers.pull_requests import PullRequestSerializer
+from apiv1.serializers.pull_requests import PullRequestBaseSerializer
 
 class PullRequestViewSet(
     mixins.CreateModelMixin,
@@ -10,4 +10,4 @@ class PullRequestViewSet(
     GenericViewSet,
     ):
     queryset = PullRequest.objects.all()
-    serializer_class = PullRequestSerializer
+    serializer_class = PullRequestBaseSerializer
