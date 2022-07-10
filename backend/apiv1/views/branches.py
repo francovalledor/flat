@@ -3,7 +3,9 @@ from rest_framework import viewsets
 
 from apiv1.utils import get_all_branches, get_branch_with_commits
 
-class BranchesViewSet(viewsets.ViewSet):   
+class BranchesViewSet(viewsets.ViewSet):
+    lookup_value_regex = '[0-9a-zA-Z-_/]+'
+
     def list(self, request):
         branches = get_all_branches()
 
