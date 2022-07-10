@@ -8,7 +8,10 @@ class Commit:
 
     @property
     def author(self):
-        return self.__commit.author
+        name = self.__commit.author.name
+        email = self.__commit.author.email
+
+        return Author(name, email)
 
     @property
     def hash(self):
@@ -38,3 +41,9 @@ class Commit:
     
     def __repr__(self) -> str:
         return self.__str__()
+
+
+class Author:
+    def __init__(self, name, email) -> None:
+        self.name = name
+        self.email = email
