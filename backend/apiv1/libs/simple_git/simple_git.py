@@ -1,8 +1,8 @@
 from git import BadName, GitCommandError, Repo
 
-from simple_git.commit import Commit
-from simple_git.branch import Branch
-from simple_git.exceptions import InvalidBranchNameException, InvalidCommitHashException, MergeException, UncommittedChangesException
+from .commit import Commit
+from .branch import Branch
+from .exceptions import InvalidBranchNameException, InvalidCommitHashException, MergeException, UncommittedChangesException
 
 class SimpleGit:
     CURRENT_DIRECTORY = '.'

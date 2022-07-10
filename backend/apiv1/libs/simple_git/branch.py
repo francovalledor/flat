@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from git import Head
 
-from simple_git.commit import Commit
+from .commit import Commit
 
 
 class Branch:
