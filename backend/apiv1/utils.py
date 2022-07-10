@@ -2,40 +2,44 @@ from apiv1.libs.simple_git import SimpleGit, Commit, Branch
 
 from apiv1.libs.simple_git.exceptions import InvalidBranchNameException, InvalidCommitHashException
 from rest_framework.exceptions import NotFound
-from apiv1.serializers.branches import BranchSerializer, serialize_branch_details
-from apiv1.serializers.commits import CommitSerializer
-
 
 
 git = SimpleGit()
 
-def get_all_branches():
-    return BranchSerializer(git.branches, many=True).data
+def get_all_branches() -> list[Branch]:
+    return git.branches
 
 
-def get_branch_with_commits(branch_name):
+def get_commits_by_branch_name(branch_name):
+    try:
+        commits = git.list_commits(branch_name)
+    except InvalidBranchNameException:
+        raise NotFound(f"branch: '{branch_name}'")
+    
+    return commits
+
+
+def get_branch_by_name(branch_name) -> Branch:
     try:
         branch = git.get_branch_by_name(branch_name)
-        commits = git.list_commits(branch_name)
-    except InvalidBranchNameException as error:
+    except InvalidBranchNameException:
         raise NotFound(f"branch: '{branch_name}'")
+    
+    return branch
 
-    return serialize_branch_details(branch, commits)
 
-
-def get_all_commits():
-    all_commits = git.list_commits()
-
-    return CommitSerializer(all_commits, many=True).data
+def get_all_commits() -> list[Commit]:
+    return git.list_commits()
 
 
 def get_branches_names() -> list[str]:
     return git.branch_names
 
-def get_commit(commit_hash):
+
+def get_commit(commit_hash) -> Commit:
     try:
         commit = git.get_commit(commit_hash)
     except InvalidCommitHashException as error:
         raise NotFound(f"Commit hash: '{commit_hash}'")
     
-    return CommitSerializer(commit).data
+    return commit
