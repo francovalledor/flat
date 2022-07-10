@@ -1,8 +1,9 @@
 from apiv1.libs.simple_git import SimpleGit, Commit, Branch
-from apiv1.serializers import serialize_branch_details, BranchSerializer, CommitSerializer
+
 from apiv1.libs.simple_git.exceptions import InvalidBranchNameException, InvalidCommitHashException
 from rest_framework.exceptions import NotFound
-from apiv1.serializers import CommitSerializer
+from apiv1.serializers.branches import BranchSerializer, serialize_branch_details
+from apiv1.serializers.commits import CommitSerializer
 
 
 
