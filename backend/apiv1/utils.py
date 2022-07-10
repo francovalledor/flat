@@ -1,7 +1,5 @@
 from apiv1.libs.simple_git import SimpleGit, Commit, Branch
-from apiv1.serializers import serialize_branch_simple
-from apiv1.serializers import serialize_branch_details
-
+from apiv1.serializers import serialize_branch_simple, serialize_branch_details, serialize_commit
 
 def get_all_branches():
     git = SimpleGit()
