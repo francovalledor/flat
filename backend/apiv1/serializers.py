@@ -1,29 +1,31 @@
-from unittest import result
 from apiv1.libs.simple_git import Commit, Branch
-
-
-def serialize_branch_simple(branch: Branch) -> dict:
-    result = {}
-    result['name'] = branch.name
-    result['last_commit'] = serialize_commit(branch.last_commit)
-    
-    return result
-    
-
-def serialize_commit(commit: Commit) -> dict:
-    result = {}
-    result['author'] = {'name': commit.author.name, 'email': commit.author.email}
-    result['datetime'] = str(commit.datetime)
-    result['hash'] = commit.hash
-    result['affected_files'] = commit.affected_files
-    result['message'] = commit.message
-    
-    return result
+from rest_framework import serializers
 
 
 def serialize_branch_details(branch: Branch, commits: list[Commit]):
     result = {}
     result['name'] = branch.name
-    result['commits'] = list(map(serialize_commit, commits))
-    
+    result['commits'] = CommitSerializer(commits, many = True).data
     return result
+
+class AuthorSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    email = serializers.EmailField()
+
+class CommitSerializer(serializers.Serializer):
+    author = AuthorSerializer(many=False)
+    datetime = serializers.DateTimeField()
+    message = serializers.CharField()
+    hash = serializers.CharField()
+    affected_files = serializers.DictField()
+    
+class BranchSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    last_commit = CommitSerializer()
+    
+class BranchesSerializer(serializers.Serializer):
+    branches = BranchSerializer(many=True)
+    
+class BranchDetailsSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    commits = CommitSerializer(many=True)

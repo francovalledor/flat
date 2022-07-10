@@ -1,13 +1,15 @@
 from apiv1.libs.simple_git import SimpleGit, Commit, Branch
-from apiv1.serializers import serialize_branch_simple, serialize_branch_details, serialize_commit
+from apiv1.serializers import serialize_branch_details, BranchSerializer, CommitSerializer
 from apiv1.libs.simple_git.exceptions import InvalidBranchNameException, InvalidCommitHashException
 from rest_framework.exceptions import NotFound
+from apiv1.serializers import CommitSerializer
+
 
 
 git = SimpleGit()
 
 def get_all_branches():
-    return list(map(serialize_branch_simple, git.branches))
+    return BranchSerializer(git.branches, many=True).data
 
 
 def get_branch_with_commits(branch_name):
@@ -22,10 +24,12 @@ def get_branch_with_commits(branch_name):
 
 def get_all_commits():
     all_commits = git.list_commits()
-    all_commits_serialized = list(map(serialize_commit, all_commits))
-    
-    return all_commits_serialized
 
+    return CommitSerializer(all_commits, many=True).data
+
+
+def get_branches_names() -> list[str]:
+    return git.branch_names
 
 def get_commit(commit_hash):
     try:
@@ -33,4 +37,4 @@ def get_commit(commit_hash):
     except InvalidCommitHashException as error:
         raise NotFound(f"Commit hash: '{commit_hash}'")
     
-    return serialize_commit(commit)
+    return CommitSerializer(commit).data
