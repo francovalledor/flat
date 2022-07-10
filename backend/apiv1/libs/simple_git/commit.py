@@ -37,7 +37,7 @@ class Commit:
         return self.datetime > other.datetime
     
     def __str__(self) -> str:
-        return f"\nMessage: {self.message}\nAuthor: {self.author}\nDate: {self.datetime}\nHash: {self.hash}\n"
+        return f"\nMessage: {self.message}\nAuthor: {self.author.name} - {self.author.email}\nDate: {self.datetime}\nHash: {self.hash}\n"
     
     def __repr__(self) -> str:
         return self.__str__()
