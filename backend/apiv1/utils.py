@@ -22,3 +22,10 @@ def get_all_commits():
     all_commits_serialized = list(map(serialize_commit, all_commits))
     
     return all_commits_serialized
+
+
+def get_commit(commit_hash):
+    git = SimpleGit()
+    commit = git.get_commit(commit_hash)
+    
+    return serialize_commit(commit)
