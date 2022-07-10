@@ -21,6 +21,6 @@ class PullRequest(models.Model):
 
     author_name = models.CharField(max_length=255)
     author_email = models.CharField(max_length=255)
-    created_date = models.DateTimeField(default=datetime.now, blank=True)
+    created_date = models.DateTimeField(auto_now_add=True)
     merged_date = models.DateTimeField(null=True, blank=True)
     closed_date = models.DateTimeField(null=True, blank=True)
