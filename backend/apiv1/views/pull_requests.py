@@ -10,6 +10,7 @@ class PullRequestViewSet(
         GenericViewSet,
     ):
     queryset = PullRequest.objects.all()
+    http_method_names = ['get', 'post', 'patch', 'head']
     
     def get_serializer_class(self):
         DEFAULT_SERIALIZER = PullRequestBaseSerializer
