@@ -1,7 +1,9 @@
 import React from "react";
 import { FaCheckCircle, FaEdit, FaRegTimesCircle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import { closePullRequest, mergePullRequest } from "../../api/api";
 import { PR_STATUSES } from "../../constants";
+import { UPDATE_PR } from "../../routes";
 
 import { PullRequest } from "../../types/types";
 import { formatDate } from "../../utils/dates";
@@ -10,8 +12,12 @@ import { toastError, toastSuccess } from "../../utils/toasts";
 
 
 const PRListItem: React.FC<{PR: PullRequest, refresh: () => void}> = ({ PR, refresh }) => {
+  const navigate = useNavigate();
+
+  const goToEditPR = () => navigate(`${UPDATE_PR}${PR.id}`)
+
   const handleEdit = () => {
-    console.log('Edit PR', PR.id)
+    goToEditPR();
   }
 
   const handleClose = async () => {
