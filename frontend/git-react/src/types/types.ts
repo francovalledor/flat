@@ -7,7 +7,7 @@ export interface PullRequest {
     destination: string;
     message: string;
     source: string;
-    status: PR_STATUSES;
+    status: string;
     title: string;
     created_date: string;
     closed_date?: string;
