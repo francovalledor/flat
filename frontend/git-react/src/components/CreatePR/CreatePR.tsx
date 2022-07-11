@@ -1,7 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { createPullRequest, getBranches } from "../../api/api";
 import { PR_STATUSES } from "../../constants";
+import { PULL_REQUESTS } from "../../routes";
 import { Branch, CreatePullRequestData } from "../../types/types";
 import { toastError, toastSuccess } from "../../utils/toasts";
 import Select from "../Select/Select";
@@ -9,6 +11,8 @@ import Select from "../Select/Select";
 const VALID_INITIAL_STATUSES = [ PR_STATUSES.OPEN, PR_STATUSES.MERGED];
 
 const CreatePR: React.FC = () => {
+  const navigate = useNavigate();
+
   const [branches, setBranches] = useState<Branch[]>([]);
 
   const branchNames = useMemo(
@@ -40,10 +44,13 @@ const CreatePR: React.FC = () => {
     return `Invalid: ${invalidFields.join(', ')}`;
   };
 
+  const goToPRs = () => navigate(PULL_REQUESTS);
+
   const createPR = async (pr: CreatePullRequestData) => {
     try {
       const response = await createPullRequest(pr)
-      toastSuccess('Pull request created.')
+      toastSuccess('Pull request created.');
+      goToPRs();
     } catch (error: any) {
       const invalidFields = tryGetInvalidFieldsResponse(error)
       toastError(invalidFields || error.response.statusText);
