@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { get } from "./utils/fetch";
-import logo from './logo.svg';
 import './App.css';
 import { closePullRequest, createPullRequest, getBranch, getBranches, getCommit, getCommits, getPullRequest, getPullRequests, mergePullRequest, updatePullRequest } from './api/api';
 import { Branch, Commit, PullRequest } from './types/types';
 import BranchList from './components/BranchList/BranchList';
 import CommitList from './components/CommitList/CommitList';
 import PRList from './components/PRList/PRList';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
+import NavBar from './components/NavBar/NavBar';
+import CreatePR from './components/CreatePR/CreatePR';
+import { BRANCHES, COMMITS, NEW_PR, PULL_REQUESTS } from './routes';
+
 
 function App() {
   const [branches, setBranches] = useState<Branch[]>([]);
@@ -39,11 +49,22 @@ function App() {
   return (
     <div className="App">
       <div className="container p-4 mt-4 shadow">
-        <div className="row">
+        <ToastContainer />
+        <Router>
+          <NavBar />
+          <div className="row">
             <div className="col-md-12 mx-auto">
-              <PRList PRs={PRs} />
+              <div>
+                <Routes>
+                  <Route path={BRANCHES} element={<BranchList branches={branches} />} />
+                  <Route path={PULL_REQUESTS} element={<PRList PRs={PRs} />} />
+                  <Route path={COMMITS} element={<CommitList commits={commits} />} />
+                  <Route path={NEW_PR} element={<CreatePR />} />
+                </Routes>
+              </div>
             </div>
           </div>
+        </Router>
       </div>
     </div>
   );
