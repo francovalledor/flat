@@ -1,5 +1,5 @@
 import React from "react";
-import { FaEdit, FaRegTimesCircle, FaTrash } from "react-icons/fa";
+import { FaCheckCircle, FaEdit, FaRegTimesCircle } from "react-icons/fa";
 
 import { PullRequest } from "../../types/types";
 import { formatDate } from "../../utils/dates";
@@ -15,6 +15,10 @@ const PRListItem: React.FC<{PR: PullRequest}> = ({ PR }) => {
     console.log('Close PR', PR.id)
   }
 
+  const handleMerge = () => {
+    console.log('Merge PR', PR.id)
+  }
+
   return (
     <tr>
       <td className="text-capitalize text-start">{PR.id}</td>
@@ -27,6 +31,9 @@ const PRListItem: React.FC<{PR: PullRequest}> = ({ PR }) => {
         <div className="btn-group btn-group-sm">
           <button className="btn btn-primary" onClick={handleEdit}>
             <FaEdit title="Edit PR" />
+          </button>
+          <button onClick={handleClose} className="btn btn-success">
+            <FaCheckCircle title="Merge"/>
           </button>
           <button onClick={handleClose} className="btn btn-danger">
             <FaRegTimesCircle title="Close PR"/>
