@@ -29,3 +29,27 @@ class PullRequestBaseSerializer(ModelSerializer):
             'merged_date',
             'closed_date',
         ]
+        
+
+
+class PullRequestCreateSerializer(PullRequestBaseSerializer):
+    def validate_status(self, status):
+        status = status.upper()
+        VALID_INITIAL_STATUSES = [PR_statuses.OPEN, PR_statuses.MERGED]
+        
+        if status not in VALID_INITIAL_STATUSES:
+            raise ValidationError(f"Invalid status for new PR. Given: '{status}'. Valid: {list(map(str,VALID_INITIAL_STATUSES))}")
+        
+        return status
+        
+    
+    def create(self, validated_data):
+        source = validated_data.get('source')
+        destination = validated_data.get('destination')
+        validate_branches_are_different(source, destination)
+        
+        status = validated_data.get('status')
+        if status == PR_statuses.MERGED:
+            merge_branches(source, destination)
+        
+        return super().create(validated_data)
