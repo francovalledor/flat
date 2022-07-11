@@ -104,15 +104,18 @@ class SimpleGit:
 
    
     def __get_modified_files_states(self) -> list:
+        EMPTY_SPACE = ' '
+
         git_modified_files_with_status = self.__repo.git.status(porcelain=True).split('\n')
         stripped = list(map(str.strip, git_modified_files_with_status))
         
         result = []
         
         for file in stripped:
-            first_space_index = file.index(' ')
-            status_descriptor = file[:first_space_index]
-            result.append(status_descriptor)
+            if EMPTY_SPACE in file:
+                first_space_index = file.index(EMPTY_SPACE)
+                status_descriptor = file[:first_space_index]
+                result.append(status_descriptor)
             
         return result
             
