@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getBranches } from "../../api/api";
 import { Branch } from "../../types/types";
 import BranchListItem from "./BranchListItem";
 
-const BranchList: React.FC<{ branches: Branch[] }> = ({ branches }) => {
+const BranchList: React.FC = () => {
+  const [branches, setBranches] = useState<Branch[]>([]);
+
+  const fetchBranches = async () => {
+    const response = await getBranches();
+    setBranches(response);
+  };
+
+  useEffect(() => {
+    fetchBranches();
+  }, []);
+
   return (
     <>
       <h3>Branches</h3>

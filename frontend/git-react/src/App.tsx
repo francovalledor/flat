@@ -34,7 +34,6 @@ function App() {
       title: 'Hola mundo'
     }
     const response = await getBranches();
-    console.log(response);
     setBranches(response);
 
     const _prs = await getPullRequests();
@@ -55,7 +54,7 @@ function App() {
             <div className="col-md-12 mx-auto">
               <div>
                 <Routes>
-                  <Route path={BRANCHES} element={<BranchList branches={branches} />} />
+                  <Route path={BRANCHES} element={<BranchList />} />
                   <Route path={`${BRANCHES}/:branch_name`} element={<BranchDetails />} />
                   <Route path={PULL_REQUESTS} element={<PRList />} />
                   <Route path={COMMITS} element={<CommitListContainer />} />
