@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { createPullRequest, getBranches } from "../../api/api";
 import { PR_STATUSES } from "../../constants";
 import { PULL_REQUESTS } from "../../routes";
@@ -75,15 +74,7 @@ const CreatePR: React.FC = () => {
     }
 
     if (new_pr.source == new_pr.destination) {
-      toast.error('Error: source and destination should be different branches', {
-        position: "top-right",
-        autoClose: 10000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        });
+      toastError('Error: source and destination should be different branches');
       return;
     }
 
