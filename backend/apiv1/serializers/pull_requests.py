@@ -1,4 +1,3 @@
-import re
 from rest_framework.serializers import ModelSerializer, ValidationError
 from apiv1.models import PullRequest, PR_statuses
 from apiv1.utils import get_branches_names, merge_branches
@@ -47,9 +46,11 @@ class PullRequestCreateSerializer(PullRequestBaseSerializer):
         source = validated_data.get('source')
         destination = validated_data.get('destination')
         validate_branches_are_different(source, destination)
+        title = validated_data.get('title')
+        message = validated_data.get('message')
         
         status = validated_data.get('status')
         if status == PR_statuses.MERGED:
-            merge_branches(source, destination)
+            merge_branches(source, destination, message or title)
         
         return super().create(validated_data)

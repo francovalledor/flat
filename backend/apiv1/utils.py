@@ -46,9 +46,9 @@ def get_commit(commit_hash) -> Commit:
     return commit
 
 
-def merge_branches(source, destination):
+def merge_branches(source, destination, message):
     try:
-        git.merge(source, destination)
+        git.merge(source, destination, message)
     except MergeException:
         raise MergeConflictsException()
     except UncommittedChangesException:

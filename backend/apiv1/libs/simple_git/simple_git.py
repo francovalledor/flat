@@ -45,7 +45,7 @@ class SimpleGit:
         self.__repo.branches[branch_name].checkout()
     
     
-    def merge(self, source, destination) -> None:
+    def merge(self, source, destination, message:str = "") -> None:
         self.__validate_branch_name(source)
         self.__validate_branch_name(destination)
         
@@ -54,14 +54,15 @@ class SimpleGit:
         self.checkout(destination)
         
         try:
-            self.__repo.git.merge(source)
+            result = self.__repo.git.merge(source, m=message)
         except GitCommandError:
             if self.__are_there_conflicts():
                 self.__abort_merge()
 
             self.checkout(current)
             raise MergeException
-    
+
+
     def get_commit(self, hash: str) -> Commit:
         try:
             commit = self.__repo.commit(hash)
