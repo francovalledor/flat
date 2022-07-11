@@ -45,11 +45,12 @@ class PullRequestCreateSerializer(PullRequestBaseSerializer):
     def create(self, validated_data):
         source = validated_data.get('source')
         destination = validated_data.get('destination')
-        validate_branches_are_different(source, destination)
         title = validated_data.get('title')
         message = validated_data.get('message')
-        
         status = validated_data.get('status')
+        
+        validate_branches_are_different(source, destination)
+
         if status == PR_statuses.MERGED:
             merge_branches(source, destination, message or title)
         
