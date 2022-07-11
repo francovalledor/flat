@@ -6,3 +6,13 @@ services:
     command: sh -c 'python manage.py runserver 0.0.0.0:8000'
     ports:
       - '8000:8000'
+
+  frontreact:
+    build: ./frontend/git-react
+    container_name: 'frontend'
+    command: sh -c 'npm install; npm start'
+    ports:
+      - '3000:3000'
+
+    volumes:
+      - ./frontend:/frontend
