@@ -1,3 +1,21 @@
+# FlatMX
+
+## Postman collection
+https://www.getpostman.com/collections/d4696fde53ce2fe2778e
+
+In order to use postman collection, you need to create an environment and set 
+'baseUrl' = {your_server_ip}/api/v1/
+
+In my case, 'baseUrl' = 'http://127.0.0.1:8000/api/v1/'
+
+
+## How to run the backend
+1. clone this repository
+2. cd to repository root folder
+3. run: docker-compose up
+4. That's it.
+
+
 # fullstack-interview-test
 Interview test for fullstack Software Engineers
 
