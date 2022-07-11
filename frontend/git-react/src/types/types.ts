@@ -7,7 +7,7 @@ export interface PullRequest {
     destination: string;
     message: string;
     source: string;
-    status: string;
+    status: PR_STATUSES;
     title: string;
     created_date: string;
     closed_date?: string;
@@ -19,6 +19,11 @@ export type CreatePullRequestData = Omit<PullRequest, "id" | "created_date" | "m
 
 export type UpdatePullRequestData = Partial<CreatePullRequestData>
 
+interface AffectedFile {
+    deletions: number,
+    insertions: number,
+    lines: number,
+}
 
 export interface Commit {
     hash: string;
@@ -31,11 +36,7 @@ export interface Commit {
     }
 
     affected_files: {
-        [filename: string]: {
-            deletions: number,
-            insertions: number,
-            lines: number,
-        }
+        [filename: string]: AffectedFile;
     }
 }
 

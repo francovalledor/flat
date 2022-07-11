@@ -68,7 +68,7 @@ const CreatePR: React.FC = () => {
       source: formData.get("source") as string,
       destination: formData.get("destination") as string,
       title: formData.get("title") as string,
-      status: formData.get("status") as string,
+      status: formData.get("status") as PR_STATUSES,
       message: formData.get("message") as string,
       author_name: formData.get("author_name") as string,
       author_email: formData.get("author_email") as string,
