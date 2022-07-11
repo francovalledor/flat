@@ -1,31 +1,55 @@
 from apiv1.libs.simple_git import SimpleGit, Commit, Branch
-from apiv1.serializers import serialize_branch_simple, serialize_branch_details, serialize_commit
 
-def get_all_branches():
-    git = SimpleGit()
-    result = list(map(serialize_branch_simple, git.branches))
-
-    return result
+from apiv1.libs.simple_git.exceptions import InvalidBranchNameException, InvalidCommitHashException, MergeException, UncommittedChangesException
+from rest_framework.exceptions import NotFound
+from apiv1.exceptions import MergeConflictsException, UncommittedChangesAPIException
 
 
-def get_branch_with_commits(branch_name):
-    git = SimpleGit()
-    commits = git.list_commits(branch_name)
-    branch = git.get_branch_by_name(branch_name)
-    return serialize_branch_details(branch, commits)
+git = SimpleGit()
+
+def get_all_branches() -> list[Branch]:
+    return git.branches
 
 
-def get_all_commits():
-    git = SimpleGit()
-    all_commits = git.list_commits()
+def get_commits_by_branch_name(branch_name):
+    try:
+        commits = git.list_commits(branch_name)
+    except InvalidBranchNameException:
+        raise NotFound(f"branch: '{branch_name}'")
     
-    all_commits_serialized = list(map(serialize_commit, all_commits))
-    
-    return all_commits_serialized
+    return commits
 
 
-def get_commit(commit_hash):
-    git = SimpleGit()
-    commit = git.get_commit(commit_hash)
+def get_branch_by_name(branch_name) -> Branch:
+    try:
+        branch = git.get_branch_by_name(branch_name)
+    except InvalidBranchNameException:
+        raise NotFound(f"branch: '{branch_name}'")
     
-    return serialize_commit(commit)
+    return branch
+
+
+def get_all_commits() -> list[Commit]:
+    return git.list_commits()
+
+
+def get_branches_names() -> list[str]:
+    return git.branch_names
+
+
+def get_commit(commit_hash) -> Commit:
+    try:
+        commit = git.get_commit(commit_hash)
+    except InvalidCommitHashException as error:
+        raise NotFound(f"Commit hash: '{commit_hash}'")
+    
+    return commit
+
+
+def merge_branches(source, destination, message):
+    try:
+        git.merge(source, destination, message)
+    except MergeException:
+        raise MergeConflictsException()
+    except UncommittedChangesException:
+        raise UncommittedChangesAPIException()

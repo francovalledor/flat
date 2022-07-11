@@ -20,3 +20,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('apiv1.urls'))
 ]
+
+handler400 = 'rest_framework.exceptions.bad_request'
+handler404 = 'apiv1.views.errors.not_found'
+handler500 = 'rest_framework.exceptions.server_error'

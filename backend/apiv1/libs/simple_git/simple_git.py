@@ -45,7 +45,7 @@ class SimpleGit:
         self.__repo.branches[branch_name].checkout()
     
     
-    def merge(self, source, destination) -> None:
+    def merge(self, source, destination, message:str = "") -> None:
         self.__validate_branch_name(source)
         self.__validate_branch_name(destination)
         
@@ -54,14 +54,15 @@ class SimpleGit:
         self.checkout(destination)
         
         try:
-            self.__repo.git.merge(source)
+            result = self.__repo.git.merge(source, m=message)
         except GitCommandError:
             if self.__are_there_conflicts():
                 self.__abort_merge()
 
             self.checkout(current)
             raise MergeException
-    
+
+
     def get_commit(self, hash: str) -> Commit:
         try:
             commit = self.__repo.commit(hash)
@@ -104,15 +105,18 @@ class SimpleGit:
 
    
     def __get_modified_files_states(self) -> list:
+        EMPTY_SPACE = ' '
+
         git_modified_files_with_status = self.__repo.git.status(porcelain=True).split('\n')
         stripped = list(map(str.strip, git_modified_files_with_status))
         
         result = []
         
         for file in stripped:
-            first_space_index = file.index(' ')
-            status_descriptor = file[:first_space_index]
-            result.append(status_descriptor)
+            if EMPTY_SPACE in file:
+                first_space_index = file.index(EMPTY_SPACE)
+                status_descriptor = file[:first_space_index]
+                result.append(status_descriptor)
             
         return result
             
