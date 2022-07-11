@@ -3,11 +3,15 @@ import { get } from "./utils/fetch";
 import logo from './logo.svg';
 import './App.css';
 import { closePullRequest, createPullRequest, getBranch, getBranches, getCommit, getCommits, getPullRequest, getPullRequests, mergePullRequest, updatePullRequest } from './api/api';
-import { Branch } from './types/types';
+import { Branch, Commit, PullRequest } from './types/types';
 import BranchList from './components/BranchList/BranchList';
+import CommitList from './components/CommitList/CommitList';
+import PRList from './components/PRList/PRList';
 
 function App() {
   const [branches, setBranches] = useState<Branch[]>([]);
+  const [commits, setCommits] = useState<Commit[]>([])
+  const [PRs, setPRs] = useState<PullRequest[]>([]);
 
   const fetch_commits = async () => {
     const pull_request = {
@@ -20,6 +24,12 @@ function App() {
     const response = await getBranches();
     console.log(response);
     setBranches(response);
+
+    const _commits = await getCommits();
+    setCommits(_commits);
+
+    const _prs = await getPullRequests();
+    setPRs(_prs);
   }
 
   useEffect(() => {
@@ -31,7 +41,7 @@ function App() {
       <div className="container p-4 mt-4 shadow">
         <div className="row">
             <div className="col-md-12 mx-auto">
-              <BranchList branches={branches}/>
+              <PRList PRs={PRs} />
             </div>
           </div>
       </div>
