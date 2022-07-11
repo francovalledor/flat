@@ -57,7 +57,7 @@ function App() {
               <div>
                 <Routes>
                   <Route path={BRANCHES} element={<BranchList branches={branches} />} />
-                  <Route path={PULL_REQUESTS} element={<PRList PRs={PRs} />} />
+                  <Route path={PULL_REQUESTS} element={<PRList />} />
                   <Route path={COMMITS} element={<CommitList commits={commits} />} />
                   <Route path={NEW_PR} element={<CreatePR />} />
                 </Routes>

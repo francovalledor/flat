@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getPullRequests } from "../../api/api";
 import { PullRequest } from "../../types/types";
 import PRListItem from "./PRListItem";
 
-const PRList: React.FC<{ PRs: PullRequest[] }> = ({ PRs }) => {
+const PRList: React.FC = () => {
+  const [PRs, setPRs] = useState<PullRequest[]>([]);
+
+  const fetchPRs = async () => {
+    const _prs = await getPullRequests();
+    setPRs(_prs);
+  }
+
+  useEffect(() => {
+    fetchPRs();
+  }, []);
+
   return (
     <>
       <h3>Pull Requests</h3>
@@ -21,7 +33,7 @@ const PRList: React.FC<{ PRs: PullRequest[] }> = ({ PRs }) => {
         </thead>
         <tbody>
           {
-            PRs.map((PR) => <PRListItem PR={PR} />)
+            PRs.map((PR) => <PRListItem PR={PR} refresh={fetchPRs} />)
           }
         </tbody>
       </table>
