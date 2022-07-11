@@ -18,11 +18,11 @@ import CreatePR from './components/CreatePR/CreatePR';
 import { BRANCHES, COMMITS, NEW_PR, PULL_REQUESTS } from './routes';
 import CommitDetails from './components/CommitDetails/CommitDetails';
 import BranchDetails from './components/BranchDetails/BranchDetails';
+import CommitListContainer from './components/CommitList/CommitListContainer';
 
 
 function App() {
   const [branches, setBranches] = useState<Branch[]>([]);
-  const [commits, setCommits] = useState<Commit[]>([])
   const [PRs, setPRs] = useState<PullRequest[]>([]);
 
   const fetch_commits = async () => {
@@ -36,9 +36,6 @@ function App() {
     const response = await getBranches();
     console.log(response);
     setBranches(response);
-
-    const _commits = await getCommits();
-    setCommits(_commits);
 
     const _prs = await getPullRequests();
     setPRs(_prs);
@@ -61,7 +58,7 @@ function App() {
                   <Route path={BRANCHES} element={<BranchList branches={branches} />} />
                   <Route path={`${BRANCHES}/:branch_name`} element={<BranchDetails />} />
                   <Route path={PULL_REQUESTS} element={<PRList />} />
-                  <Route path={COMMITS} element={<CommitList commits={commits} />} />
+                  <Route path={COMMITS} element={<CommitListContainer />} />
                   <Route path={`${COMMITS}:hash`} element={<CommitDetails />} />
                   <Route path={NEW_PR} element={<CreatePR />} />
                 </Routes>
