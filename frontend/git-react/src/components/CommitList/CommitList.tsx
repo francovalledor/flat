@@ -11,6 +11,7 @@ const CommitList: React.FC<{ commits: Commit[] }> = ({ commits: commits }) => {
         <thead>
           <tr>
             <th scope="col" className="text-start">Message</th>
+            <th scope="col" className="text-start">Hash</th>
             <th scope="col" className="text-start">Date</th>
             <th scope="col" className="text-start">Author</th>
           </tr>

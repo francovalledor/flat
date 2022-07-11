@@ -16,6 +16,7 @@ import {
 import NavBar from './components/NavBar/NavBar';
 import CreatePR from './components/CreatePR/CreatePR';
 import { BRANCHES, COMMITS, NEW_PR, PULL_REQUESTS } from './routes';
+import CommitDetails from './components/CommitDetails/CommitDetails';
 
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
                   <Route path={BRANCHES} element={<BranchList branches={branches} />} />
                   <Route path={PULL_REQUESTS} element={<PRList />} />
                   <Route path={COMMITS} element={<CommitList commits={commits} />} />
+                  <Route path={`${COMMITS}:hash`} element={<CommitDetails />} />
                   <Route path={NEW_PR} element={<CreatePR />} />
                 </Routes>
               </div>
