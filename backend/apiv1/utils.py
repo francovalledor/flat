@@ -1,8 +1,8 @@
 from apiv1.libs.simple_git import SimpleGit, Commit, Branch
 
-from apiv1.libs.simple_git.exceptions import InvalidBranchNameException, InvalidCommitHashException, MergeException
+from apiv1.libs.simple_git.exceptions import InvalidBranchNameException, InvalidCommitHashException, MergeException, UncommittedChangesException
 from rest_framework.exceptions import NotFound
-from apiv1.exceptions import MergeConflictsException
+from apiv1.exceptions import MergeConflictsException, UncommittedChangesAPIException
 
 
 git = SimpleGit()
@@ -50,4 +50,6 @@ def merge_branches(source, destination):
     try:
         git.merge(source, destination)
     except MergeException:
-        raise MergeConflictsException
+        raise MergeConflictsException()
+    except UncommittedChangesException:
+        raise UncommittedChangesAPIException()
