@@ -2,12 +2,19 @@ import React, { useEffect } from 'react';
 import { get } from "./utils/fetch";
 import logo from './logo.svg';
 import './App.css';
-import { getBranch, getBranches, getCommit, getCommits, getPullRequest, getPullRequests } from './api/api';
+import { closePullRequest, createPullRequest, getBranch, getBranches, getCommit, getCommits, getPullRequest, getPullRequests, mergePullRequest, updatePullRequest } from './api/api';
 
 function App() {
 
   const fetch_commits = async () => {
-    const response = await getCommit('a5400a3ad1c6074267e8cd1c57fac3ef52a5cda8');
+    const pull_request = {
+      author_email: 'francovalledor@gmail.com',
+      author_name: 'Franco Valledor',
+      destination: 'frontend',
+      source: 'master',
+      title: 'Hola mundo'
+    }
+    const response = await updatePullRequest(4, { id: 2, author_name: 'Yo' });
     console.log(response);
   }
 
