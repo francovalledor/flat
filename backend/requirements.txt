@@ -5,3 +5,4 @@ gitpython==3.1.27
 smmap==5.0.0
 sqlparse==0.4.2
 djangorestframework==3.13.1
+django-cors-headers==3.13.0
