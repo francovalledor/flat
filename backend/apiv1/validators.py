@@ -1,5 +1,6 @@
 import re
 from rest_framework.serializers import ValidationError
+from apiv1.models import PR_statuses
 
 from apiv1.utils import get_branches_names
 
@@ -26,3 +27,12 @@ def validate_email(email):
         raise ValidationError(f"Invalid email: '{email}'")
 
     return email
+
+
+def validate_readonly_status(current_status):
+    READ_ONLY_STATUSES = [PR_statuses.CLOSED, PR_statuses.MERGED]
+    
+    if current_status in READ_ONLY_STATUSES:
+        raise ValidationError(f"{current_status.lower().capitalize()} PRs can't be modified")
+        
+    
